@@ -96,11 +96,21 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: very-simple
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: 'git'
-  repository: https://github.com/Yueyuanh/Hexo-blog.git
-  branch: main
+  # repository: https://github.com/Yueyuanh/Hexo-blog.git
+  # branch: main
+
+# Gitalk 配置
+Gitalk:
+  enable: false  # 设为 true 启用
+  clientID: "你的 GitHub OAuth App Client ID"
+  clientSecret: "你的 GitHub OAuth App Client Secret"
+  repo: "你的 GitHub 仓库名（用来存放评论）"
+  owner: "你的 GitHub 用户名"
+  admin: ["你的 GitHub 用户名"]  # 可以设置多个管理员
+  language: "zh-CN"  # 语言（可选）
