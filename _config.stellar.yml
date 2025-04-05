@@ -1,0 +1,134 @@
+preconnect:
+  - https://gcore.jsdelivr.net
+  - https://unpkg.com
+  - https://cdn.bootcdn.net
+
+inject:
+  head:
+    - <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/my_logo.png">
+    - <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/my_logo.png">
+    - <link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/my_logo.png">
+    - <link rel="manifest" href="/assets/xaoxuu/favicon/site.webmanifest">
+    - <link rel="shortcut icon" href="/assets/logo/my_logo.ico">
+    - <meta name="theme-color" content="#f8f8f8">
+    - <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css" media="all" />
+
+topic:
+  enable: true
+  filter: "topics"  
+
+# favicon: /assets/logo/my_logo.ico
+
+logo:
+  icon: /assets/icon.svg
+  title: 沉潜的小屋
+  subtitle: '我的的个人博客 | Designed by YueYuanhaoo'
+
+# 导航栏
+menubar:
+  items: 
+    - id: post
+      theme: '#1BCDFC'
+      icon: solar:documents-bold-duotone
+      title: 博客
+      url: /
+
+    - id: topic
+      theme: '#3DC550'
+      icon: solar:notebook-bookmark-bold-duotone
+      title: 专栏
+      url: /topic/
+
+    - id: explore
+      theme: '#FA6400'
+      icon: solar:planet-bold-duotone
+      title: 探索
+      url: https://yueyuanhaoo.netlify.app/
+      # url: /explore/
+
+    - id: social
+      theme: '#F44336'
+      icon: solar:chat-square-like-bold-duotone
+      title: 社交
+      url: /
+      # url: /friends/
+
+site_tree:
+  home:
+    sidebar: starter, welcome, recent
+  index_blog:
+    sidebar: starter, welcome, recent
+  index_topic:
+    menu_id: topic
+  topic:
+    menu_id: topic
+
+# 站点主结构树
+# site_tree:
+#   # -- 列表类页面 -- #
+#   # 主页配置
+#   home:
+#     leftbar: welcome, recent
+#     rightbar: timeline
+#   # 博客列表页配置
+#   index_blog:
+#     base_dir: blog # 只影响自动生成的页面路径
+#     menu_id: post # 未在 front-matter 中指定 menu_id 时，layout 为 post 的页面默认使用这里配置的 menu_id
+#     leftbar: welcome, recent # for categories/tags/archives
+#     rightbar: timeline
+#     nav_tabs:  # 近期发布 分类 标签 专栏 归档 and ...
+#       # '朋友文章': /friends/rss/
+#   # 博客专栏列表页配置
+#   index_topic:
+#     base_dir: topic # 只影响自动生成的页面路径
+#     menu_id: post # 未在 front-matter 中指定 menu_id 时，layout 为 topic 的页面默认使用这里配置的 menu_id
+#   # 文档列表页配置
+#   index_wiki:
+#     base_dir: wiki # 只影响自动生成的页面路径
+#     menu_id: wiki # 未在 front-matter 中指定 menu_id 时，layout 为 wiki 的页面默认使用这里配置的 menu_id
+#     leftbar: ghissues, related, recent # for wiki
+#     rightbar: timeline
+#     nav_tabs:
+#       # 'more': https://github.com/xaoxuu
+
+
+
+
+article:
+  share: [wechat, weibo, email, link]
+  # auto_cover: true
+
+# 风格
+style:
+  text-align: justify
+  smooth_scroll: false
+  codeblock:
+    scrollbar: 0px
+  font-size:
+    body: 1rem
+  font-family:
+    logo: '"LXGW WenKai Screen", system-ui, "Microsoft Yahei", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif'
+    body: '"LXGW WenKai Screen", system-ui, "Microsoft Yahei", "Segoe UI", -apple-system, Roboto, Ubuntu, "Helvetica Neue", Arial, "WenQuanYi Micro Hei", sans-serif'
+    code: '"LXGW WenKai Screen", Menlo, Monaco, Consolas, system-ui, "Courier New", monospace, sans-serif'
+    codeblock: 'Menlo, Monaco, Consolas, system-ui, "Courier New", monospace, sans-serif'
+
+# 评论系统
+comments:
+  service: giscus
+  # giscus
+  # https://giscus.app/zh-CN
+  giscus:
+    src: https://giscus.app/client.js
+    data-repo: Yueyuanh/Giscus-Blog # [在此输入仓库]
+    data-repo-id: R_kgDOOUVK9w # [在此输入仓库 ID]
+    data-category: General # [在此输入分类名]
+    data-category-id: DIC_kwDOOUVK984CozRE 
+    data-mapping: pathname
+    data-strict: 0
+    data-reactions-enabled: 1
+    data-emit-metadata: 0
+    data-input-position: top # top, bottom
+    data-theme: preferred_color_scheme
+    data-lang: zh-CN
+    data-loading: lazy
+    crossorigin: anonymous

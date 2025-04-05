@@ -3,8 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: My Blog
-subtitle: ''
+title: 沉潜的小屋
+# avatar: http://yueyuanhaoo.netlify.app
+favicon: /assets/logo/my_logo.ico
 description: ''
 keywords:
 author: Yue Yuanhaoo

@@ -1,0 +1,5 @@
+name: RoboMaster # 在面包屑导航上会显示较短的名字
+title: RoboMaster - 汇聚全球优秀青年工程师 # 在列表页会显示完整的专栏标题
+description: 记载笔者在 RoboMaster 赛事中的学习与成长，分享 RoboMaster 相关的知识和经验。
+order_by: -date # 默认是按发布日期倒序排序
+icon: /assets/rm_256x256.ico 
