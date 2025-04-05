@@ -96,7 +96,10 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+# theme: landscape
+
+# https://xaoxuu.com/wiki/stellar/#start
+theme: stellar
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
