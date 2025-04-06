@@ -17,6 +17,8 @@ topic:
   enable: true
   filter: "topics"  
 
+# 强制实用日期
+force_date: true
 # favicon: /assets/logo/my_logo.ico
 
 logo:

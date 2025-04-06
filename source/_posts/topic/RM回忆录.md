@@ -17,10 +17,8 @@ index_topic:
 多年以后才会想起，之前一直想赢的那场比赛，已经过去好久好久了。
 <!-- more -->
 
-{% timeline %}
-<!-- node 2022 年 9 月 1 日 -->
-了解到RoboMaster这个比赛，加入沈航TUP战队
-{% image /assets/img2.png width:300px %}
-<!-- node 2022 年 9 月 11 日 -->
-第一次点亮LED灯。
-{% endtimeline %}
+
+![RM_ROAD](/assets/RM/RMroad.jpg)
+
+
+待更新...

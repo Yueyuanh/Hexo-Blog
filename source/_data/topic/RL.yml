@@ -1,0 +1,5 @@
+name: 强化学习 # 在面包屑导航上会显示较短的名字
+title: DRL - 未来机器人的斗兽场 # 在列表页会显示完整的专栏标题
+description: 记载笔者在强化学习方向的小小尝试和经验。
+order_by: -date # 默认是按发布日期倒序排序
+icon: /assets/RL/RL_logo_256x256.ico 

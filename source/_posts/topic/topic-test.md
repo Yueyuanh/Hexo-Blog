@@ -1,5 +1,5 @@
 ---
-title: topic test
+title: Topic Test
 date: 2025-04-05 15:34:31
 topic: stellar
 tags: 测试
@@ -20,7 +20,7 @@ index_topic:
 <!-- more -->
 
 # 个人简介
-{% banner 刘涵 这是个人简介 avatar:/assets/logo/bg_logo.png bg:/assets/img3.png %}
+{% banner XX 这是个人简介 avatar:/assets/logo/bg_logo.png bg:/assets/img3.png %}
 {% endbanner %}
 
 
