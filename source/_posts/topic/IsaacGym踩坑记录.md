@@ -5,30 +5,35 @@ topic: RL
 tags: RL
 cover: /assets/RL/CartpoleCmd.png
 banner: /assets/RL/CartpoleCmd.png
-poster:    # 海报（可选，全图封面卡片）
+poster:    # 海报
   topic: RL学习记录  # 可选
   headline:   # 必选
   caption:  # 可选
-  color: black # 可选，默认为跟随主题的动态颜色 # white,red...
+  color: black 
 index_topic:
-  menu_id: topic  # 与 menubar 中 id=topic 的项
+  menu_id: topic  
 ---
+
+Isaac Gym 是由Nvidia推出的机器人强化学习训练框架，可以实现多智能体并行训练，可快速实现自定义机器人模型训练和迁移。
+
+<!-- more -->
 
 # Isaac Gym踩坑记录
 
 ## TODO List
 
+
+- [x] Catpole
+- [x] cfg yaml
+- [x] capture_video
+- [x] wandb
+- [ ] - [ ] mujoco
 - [ ] @torch.jit.script
 - [ ] torch API
-- [ ] Catpole
-- [x] cfg yaml
-- [ ] mujoco
-- [x] capture_video
-- [ ] wandb
 
 ### Temp ideas
 
-- [ ] [神经网络可视化](https://netron.app/)  (ONNX)
+- [x] [神经网络可视化](https://netron.app/)  (ONNX)
 
 
 
