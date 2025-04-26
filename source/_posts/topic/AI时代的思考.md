@@ -14,7 +14,7 @@ index_topic:
   menu_id: topic  
 ---
 
-当代青年对AI的思考与反思。
+当今时代对AI的思考与反思。
 
 <!-- more -->
 

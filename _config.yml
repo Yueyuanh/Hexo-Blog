@@ -117,14 +117,6 @@ markdown:
     level: 2
     permalink: true
 
-# markdown:
-#   render:
-#     html: true
-#     breaks: true
-#     linkify: true
-#     typographer: true
-#     plugins:
-#       - markdown-it-katex
 
 # Gitalk 配置
 Gitalk:
