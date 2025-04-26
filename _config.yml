@@ -110,6 +110,21 @@ deploy:
   # branch: main
 
 
+markdown:
+  plugins:
+    - markdown-it-katex  # 或 markdown-it-mathjax
+  anchors:
+    level: 2
+    permalink: true
+
+# markdown:
+#   render:
+#     html: true
+#     breaks: true
+#     linkify: true
+#     typographer: true
+#     plugins:
+#       - markdown-it-katex
 
 # Gitalk 配置
 Gitalk:

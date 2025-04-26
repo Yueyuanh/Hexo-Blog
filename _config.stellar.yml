@@ -134,3 +134,23 @@ comments:
     data-lang: zh-CN
     data-loading: lazy
     crossorigin: anonymous
+
+# Math Formulas (KaTeX/MathJax)
+math:
+  enable: true
+  katex:
+    enable: true
+    version: "0.16.8"  # 指定 KaTeX 版本
+    copy_tex: true     # 允许复制公式代码
+
+# ## Docs: https://github.com/CHENXCHEN/hexo-renderer-markdown-it-plus
+# markdown_it_plus:
+#     highlight: true
+#     html: true
+#     xhtmlOut: true
+#     breaks: true
+#     langPrefix:
+#     linkify: true
+#     typographer:
+#     quotes: “”‘’
+#     pre_class: highlight
