@@ -137,13 +137,13 @@ comments:
 
 # Math Formulas (KaTeX/MathJax)
 math:
-  enable: true
+  # enable: true
   katex:
     strict: false
     enable: true
     version: "0.16.8"  # 指定 KaTeX 版本
     copy_tex: true     # 允许复制公式代码
-
+    mhchem: false
 
 # ## Docs: https://github.com/CHENXCHEN/hexo-renderer-markdown-it-plus
 # markdown_it_plus:

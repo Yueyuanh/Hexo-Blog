@@ -11,7 +11,10 @@ poster:    # 海报
   caption:  # 可选
   color: black 
 index_topic:
-  menu_id: topic  
+  menu_id: topic 
+  
+type: story # tech/story
+ 
 ---
 
 当今时代对AI的思考与反思。
