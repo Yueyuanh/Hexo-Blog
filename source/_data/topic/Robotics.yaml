@@ -1,0 +1,5 @@
+name: Robotics # 在面包屑导航上会显示较短的名字
+title: 机器人学-机器人技术基础 # 在列表页会显示完整的专栏标题
+description: 机械臂设计、运动学分析、动力学建模、路径规划、控制算法等
+order_by: -date # 默认是按发布日期倒序排序
+# icon: /assets/RL/RL_logo_256x256.ico 
