@@ -21,6 +21,18 @@ katex: true              # 启用 KaTeX 数学公式
 
 ## 机械臂模型（MDH）
 
+<head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
+
 | <img src="/assets/Robotics/MDH.png" width="250"> | <img src="/assets/Robotics/Yummy_joints.png" width="250"> |
 | ----------------------------------- | :------------------------------------------: |
 
