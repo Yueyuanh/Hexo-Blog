@@ -110,7 +110,7 @@ style:
   text-align: justify
   smooth_scroll: false
   leftbar:
-    background-image: none
+    background-image: url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.13/image/sidebar-bg1@small.jpg)
   codeblock:
     scrollbar: 0px
   font-size:
