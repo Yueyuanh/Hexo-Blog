@@ -109,6 +109,8 @@ article:
 style:
   text-align: justify
   smooth_scroll: false
+  leftbar:
+    background-image: none
   codeblock:
     scrollbar: 0px
   font-size:
