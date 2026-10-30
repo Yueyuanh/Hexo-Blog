@@ -21,18 +21,6 @@ katex: true              # 启用 KaTeX 数学公式
 
 ## 机械臂模型（MDH）
 
-<head>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    </script>
-</head>
-
 | <img src="/assets/Robotics/MDH.png" width="250"> | <img src="/assets/Robotics/Yummy_joints.png" width="250"> |
 | ----------------------------------- | :------------------------------------------: |
 
@@ -248,19 +236,19 @@ y=k_1s_1+k_2c_1
 $$
 ​	其中：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 &k_1=&&l_1+l_2c_2 \\
 &k_2=&&l_2s_2
-\end{alignat}
+\end{alignedat}
 $$
 ​	为了求解这种形式的方程，可进行变量代换，实际上就是改变常数$k_1$和$k_2$的形式
 
 ​	令
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 &r=+\sqrt{k_1^2+k_2^2} \\
 &\gamma=Atan2(k_2,k_1)
-\end{alignat}
+\end{alignedat}
 $$
 ​	则：
 $$
@@ -357,22 +345,21 @@ a_3 \\ -d_4s\alpha_3 \\d_4c\alpha_3 \\1
 $$
 ​	展开得出$f_1,f_2,f_3$：
 $$
-\begin{align}
-\MoveEqLeft 
+\begin{aligned}
 f_1=a_3c_3 + d_4s\alpha_3s_3+a_2\\
 
 f_2=&a_3c\alpha_2s_3 - d_4s\alpha_3c\alpha_2c_3 -d_4s\alpha_2c\alpha_3-d_3s\alpha_2 \\
 
 f_3=&a_3s\alpha_2s_3-d_4s\alpha_3s\alpha_2c_3+d_4c\alpha_2c\alpha_3+d_3c\alpha_2
-\end{align}
+\end{aligned}
 $$
 ​	看起来复杂，但是代入本项目中的参数后为：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 &f_1=&&0.096*c_3+0.27s_3+0.3 \\
 &f_2=&&0.096*s_3-0.27*c_3-0.27 \\
 &f_3=&&0
-\end{alignat}
+\end{alignedat}
 $$
 ​	同样地，我们对$^0_1T,^1_2T$应用变换得：
 $$
@@ -386,20 +373,20 @@ g_3 \\
 $$
 ​	其中：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 &g_1=c_2f_1-s_2f_2+a_1 \\
 &g_2=s_2c\alpha_1f_1+c_2c\alpha_1f_2-s\alpha_1f_3-d_2s\alpha_1 \\
 
 &g_3=s_2s\alpha_1f_1+c_2s\alpha_1f_2-c\alpha_1f_3-d_2c\alpha_1 \\
-\end{alignat}
+\end{alignedat}
 $$
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 &g_1=c_2f_1-s_2f_2 \\
 &g_2=0 \\
 
 &g_3=s_2f_1+c_2f_2 \\
-\end{alignat}
+\end{alignedat}
 $$
 
 
@@ -427,12 +414,12 @@ z=(k_1s_2-k_2c_2)s\alpha_1+k_4 \tag{2}
 $$
 ​	其中：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 &k_1=f_1 \\
 &k_2=-f_2 \\
 &k_3=f_1^2+f_2^2+f_3^2+a_1^2+d_2^2+2d_2f_3 \\
 &k_4=f_3c\alpha_1+d_2c\alpha_1
-\end{alignat}
+\end{alignedat}
 $$
 ​	上式消去了因变量$\theta_1$，并且因变量$\theta_2$的关系式简单。
 
@@ -440,11 +427,11 @@ $$
 
 1. 若$a_1=0$，则$r=k_3$，这里r是已知的。右边（$k_3$）仅是关于$\theta_3$的函数。代入下式：
    $$
-   \begin{alignat}{2}
+   \begin{alignedat}{2}
    u=&tan\frac{\theta}{2} \\
    
    cos\theta=&\frac{1-u^2}{1+u^2} \tag{*}
-   \end{alignat}
+   \end{alignedat}
    $$
    由包含$tan\frac{\theta_3}{2}$的二次方程可以解出$\theta_3$。
 2. 若$s\alpha_1=0$，则$z=k_4$，这里$z$是已知的，再次代入(*)式后，利用上面的一元二次方程可以解出$\theta_3$。
@@ -498,11 +485,11 @@ r_{31} & r_{32} & r_{33}
 $$
 如果$sin\beta \neq 0$，可得到：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 \beta=&Atan2(\sqrt{r_{31}^2+r_{32}^2},r_{33}) \\
 \alpha=&Atan2(r_{23}/s\beta,r_{13}/s\beta) \\
 \gamma=&Atan2(r_{32}/s\beta,-r_{31}/s\beta)
-\end{alignat}
+\end{alignedat}
 $$
 上式只是取了$\beta$的正平方根，还可以有第二个解，但是我们总是求满足$\beta \in [0,\pi]$的单解。
 
@@ -510,19 +497,19 @@ $$
 
 如果$\beta=0$，则解为：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 \beta=&0 \\
 \alpha=&0 \\
 \gamma=&Atan2(-r_{12},r_{11})
-\end{alignat}
+\end{alignedat}
 $$
 如果$\beta=\pi$，则解为：
 $$
-\begin{alignat}{2}
+\begin{alignedat}{2}
 \beta=&180 \\
 \alpha=&0 \\
 \gamma=&Atan2(r_{12},-r_{11})
-\end{alignat}
+\end{alignedat}
 $$
 
 
