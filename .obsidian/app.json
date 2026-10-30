@@ -1,0 +1,16 @@
+{
+  "attachmentFolderPath": "source/assets",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "source/_posts",
+  "useMarkdownLinks": true,
+  "newLinkFormat": "relative",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": false,
+  "userIgnoreFilters": [
+    "node_modules",
+    "public",
+    ".git",
+    "db.json"
+  ],
+  "defaultViewMode": "preview"
+}

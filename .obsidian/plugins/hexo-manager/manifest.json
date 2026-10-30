@@ -1,0 +1,9 @@
+{
+  "id": "hexo-manager",
+  "name": "Hexo Manager",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Manage Hexo posts, local previews, builds, and Git publishing from Obsidian.",
+  "author": "Local",
+  "isDesktopOnly": true
+}

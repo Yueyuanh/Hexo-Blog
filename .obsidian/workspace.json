@@ -1,0 +1,219 @@
+{
+  "main": {
+    "id": "f2140545acb130df",
+    "type": "split",
+    "children": [
+      {
+        "id": "f42836edcd8c6a27",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bcbeba0a7c720d5c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "source/_posts/你好.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "你好"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "097ed29ae57e983d",
+    "type": "split",
+    "children": [
+      {
+        "id": "0b850cd0a0677a80",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "76c3d252022c34e1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "0c61dca6655b26e7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "310a836eb1028046",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "a3ecc9a1bf20f348",
+    "type": "split",
+    "children": [
+      {
+        "id": "07ad6056b4adc833",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "64c288a222303fc1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "source/_posts/topic/RM回忆录.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "9e1a4bd3625fdb75",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "source/_posts/topic/RM回忆录.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "出链"
+            }
+          },
+          {
+            "id": "786412046fe97098",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "25f4c17f6c34ed88",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "31ac60eb201b9a49",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "source/_posts/topic/RM回忆录.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "hexo-manager:Hexo 本地预览": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "bcbeba0a7c720d5c",
+  "lastOpenFiles": [
+    "public/archives/2026/10/index.html",
+    "public/archives/2026/index.html",
+    "public/2026/10/30/你好/index.html",
+    "public/2026/10/30/你好",
+    "source/_posts/topic/卡尔曼滤波.md",
+    "source/_posts/你好.md",
+    "source/_posts/未命名.base",
+    "source/_posts/topic/现代控制理论.md",
+    "source/_posts/nihao.md",
+    "source/_posts/codex-plugin-test.md",
+    "netlify.toml",
+    "source/_posts/topic/AI时代的思考.md",
+    "source/_posts/topic/RM回忆录.md",
+    "source/_posts/topic/IsaacGym踩坑记录.md",
+    "source/_posts/topic/BSpline.md",
+    "source/assets/control/adcontrol.png",
+    "source/_posts/未命名 1.base",
+    "source/_posts/未命名.md",
+    "public/archives/2026/10",
+    "public/archives/2026",
+    "source/assets/BSDOC/4NKnot.png",
+    "source/assets/BSDOC/4Knot.png",
+    "source/_posts/topic/topic-test.md",
+    "source/_posts/topic/YummyNote.md"
+  ]
+}
