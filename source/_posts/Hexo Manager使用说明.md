@@ -15,7 +15,7 @@ Hexo Manager 是本博客仓库中的 Obsidian 社区插件，用来在 Obsidian
 本插件只支持 Obsidian 桌面版。打开本仓库作为 Obsidian 库：
 
 ```text
-E:\桌面\Projects\Website.io\Hexo\my-blog
+E:\Website.io\Hexo\my-blog
 ```
 
 在 Obsidian 的“设置 → 社区插件”中关闭受限模式，并确认 `Hexo Manager` 已启用。第一次修改插件文件后，需要完全退出并重新打开 Obsidian，插件才会重新加载。
@@ -56,6 +56,21 @@ source/assets/RM/RMroad.jpg
 ```
 
 插件会在 Obsidian 预览中把 `/assets/...` 映射到本地文件；Hexo 构建时仍使用网站的 `/assets/...` 路径。
+
+## 侧边栏实时预览
+
+`cover`、`banner` 和首页文章卡片属于 Hexo 主题渲染内容，Obsidian 的普通 Markdown 阅读区不会直接显示它们。使用命令面板中的“Hexo: 打开侧边栏预览”，插件会启动本地 Hexo 服务，并在 Obsidian 右侧加载完整网站。
+
+侧边栏中的“刷新”按钮会重新加载当前页面。执行“Hexo: 构建网站”后，侧边栏也会自动刷新，因此可以直接检查封面、横幅、文章列表和正文图片。
+
+例如下面的 front matter 会由 Hexo 主题显示封面和横幅：
+
+```yaml
+cover: /assets/control/kalman.png
+banner: /assets/control/kalman2.png
+```
+
+`//assets/...` 是浏览器的协议相对 URL，容易被解析成外部主机；建议在文章中统一写成 `/assets/...`。
 
 ## 发布流程
 

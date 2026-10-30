@@ -17,7 +17,7 @@ katex: true              # 启用 KaTeX 数学公式
 
 ---
 
-BSpline 三次B样条曲线
+BSpline 三次B样条曲线 
 
 <!-- more -->
 BSpline 三次B样条曲线简介与推导
