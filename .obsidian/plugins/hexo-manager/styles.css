@@ -1,0 +1,29 @@
+.hexo-manager-status-list {
+  max-height: min(45vh, 360px);
+  overflow: auto;
+  padding: 8px 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-secondary);
+  font-family: var(--font-monospace);
+  font-size: var(--font-smaller);
+}
+
+.hexo-manager-status-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 4px 0;
+  line-height: 1.4;
+}
+
+.hexo-manager-status-code {
+  flex: 0 0 2ch;
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+.hexo-manager-status-path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

@@ -55,15 +55,23 @@ class TextInputModal extends Modal {
 }
 
 class ConfirmModal extends Modal {
-  constructor(app, message, onConfirm) {
+  constructor(app, commitMessage, entries, onConfirm) {
     super(app);
-    this.message = message;
+    this.commitMessage = commitMessage;
+    this.entries = entries;
     this.onConfirm = onConfirm;
   }
 
   onOpen() {
     const { contentEl } = this;
-    contentEl.createEl('p', { text: this.message });
+    contentEl.createEl('p', { text: '将构建网站、提交并推送以下变更：' });
+    const list = contentEl.createDiv({ cls: 'hexo-manager-status-list' });
+    for (const entry of this.entries) {
+      const row = list.createDiv({ cls: 'hexo-manager-status-row' });
+      row.createEl('span', { text: entry.code, cls: 'hexo-manager-status-code' });
+      row.createEl('span', { text: entry.path, cls: 'hexo-manager-status-path' });
+    }
+    contentEl.createEl('p', { text: `提交说明：${this.commitMessage}` });
     new Setting(contentEl)
       .addButton((button) =>
         button.setButtonText('取消').onClick(() => this.close()),
@@ -284,15 +292,26 @@ module.exports = class HexoManagerPlugin extends Plugin {
 
   async confirmPublish(message) {
     try {
-      const status = await this.run('git', ['status', '--short'], '读取 Git 状态');
+      const status = await this.run(
+        'git',
+        ['-c', 'core.quotepath=false', 'status', '--short'],
+        '读取 Git 状态',
+      );
       if (!status.trim()) {
         new Notice('没有待发布的变更');
         return;
       }
-      const preview = status.trim().slice(0, 3000);
+      const entries = status
+        .trim()
+        .split(/\r?\n/)
+        .map((line) => ({
+          code: line.slice(0, 2).trim() || '??',
+          path: line.slice(3).trim(),
+        }))
+        .filter((entry) => entry.path);
       new ConfirmModal(
         this.app,
-        `将构建网站、提交并推送以下变更：\n\n${preview}\n\n提交说明：${message}`,
+        entries,
         () => this.publish(message),
       ).open();
     } catch (error) {
