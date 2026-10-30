@@ -46,6 +46,18 @@
   font-size: var(--font-smaller);
 }
 
+.hexo-manager-preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hexo-manager-preview-actions button {
+  margin: 0;
+  padding: 3px 8px;
+  font-size: var(--font-smaller);
+}
+
 .hexo-manager-preview-frame {
   width: 100%;
   min-height: 0;

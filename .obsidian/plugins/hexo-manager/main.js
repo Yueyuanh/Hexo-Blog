@@ -1,4 +1,4 @@
-const { Plugin, ItemView, Modal, Notice, Setting, TFile } = require('obsidian');
+const { Plugin, ItemView, Modal, Notice, Setting, TFile, MarkdownView } = require('obsidian');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -11,6 +11,7 @@ class HexoPreviewView extends ItemView {
     this.plugin = plugin;
     this.frame = null;
     this.url = plugin.previewUrl;
+    this.syncButton = null;
   }
 
   getViewType() {
@@ -39,7 +40,11 @@ class HexoPreviewView extends ItemView {
     this.contentEl.addClass('hexo-manager-preview-view');
     const toolbar = this.contentEl.createDiv({ cls: 'hexo-manager-preview-toolbar' });
     toolbar.createEl('span', { text: 'Hexo 本地网站' });
-    const reload = toolbar.createEl('button', { text: '刷新' });
+    const actions = toolbar.createDiv({ cls: 'hexo-manager-preview-actions' });
+    this.syncButton = actions.createEl('button', { text: '' });
+    this.syncButton.addEventListener('click', () => this.plugin.toggleScrollSync());
+    this.setSyncButtonLabel();
+    const reload = actions.createEl('button', { text: '刷新' });
     reload.addEventListener('click', () => this.reload());
     this.frame = this.contentEl.createEl('iframe', {
       cls: 'hexo-manager-preview-frame',
@@ -50,6 +55,13 @@ class HexoPreviewView extends ItemView {
         loading: 'eager',
       },
     });
+    this.frame.addEventListener('load', () => this.plugin.syncPreviewScroll());
+  }
+
+  setSyncButtonLabel() {
+    if (this.syncButton) {
+      this.syncButton.setText(this.plugin.syncScrollEnabled ? '同步滚动：开' : '同步滚动：关');
+    }
   }
 
   setUrl(url, force = false) {
@@ -63,6 +75,12 @@ class HexoPreviewView extends ItemView {
     if (!this.frame) return;
     const separator = this.url.includes('?') ? '&' : '?';
     this.frame.src = `${this.url}${separator}_=${Date.now()}`;
+  }
+
+  sendScrollRatio(ratio) {
+    if (this.frame?.contentWindow) {
+      this.frame.contentWindow.postMessage({ type: 'hexo-manager-scroll', ratio }, '*');
+    }
   }
 }
 
@@ -150,16 +168,23 @@ class ConfirmModal extends Modal {
 
 module.exports = class HexoManagerPlugin extends Plugin {
   async onload() {
+    this.settings = (await this.loadData()) || {};
+    this.syncScrollEnabled = this.settings.syncScrollEnabled === true;
     this.serverProcess = null;
     this.root = this.app.vault.adapter.getBasePath();
     this.homeUrl = 'http://localhost:4000/';
     this.previewUrl = this.homeUrl;
     this.previewSourcePath = null;
     this.previewRefreshTimer = null;
+    this.editorScrollElement = null;
+    this.editorScrollHandler = null;
+    this.editorAttachTimer = null;
+    this.scrollSyncRaf = null;
     this.registerView(VIEW_TYPE_HEXO_PREVIEW, (leaf) => new HexoPreviewView(leaf, this));
     this.registerEvent(this.app.workspace.on('active-leaf-change', (leaf) => {
       if (leaf && leaf.view && leaf.view.getViewType?.() === VIEW_TYPE_HEXO_PREVIEW) return;
       this.updatePreviewTarget();
+      this.attachEditorScroll();
     }));
     this.registerEvent(this.app.vault.on('modify', (file) => {
       if (file.path === this.previewSourcePath) this.schedulePreviewRefresh();
@@ -207,14 +232,10 @@ module.exports = class HexoManagerPlugin extends Plugin {
     this.addCommand({
       id: 'hexo-publish',
       name: 'Hexo: 发布到 Git 远程仓库',
-      callback: () =>
-        new TextInputModal(
-          this.app,
-          '发布说明',
-          '例如：更新论文笔记',
-          (message) => this.confirmPublish(message),
-        ).open(),
+      callback: () => this.openPublishDialog(),
     });
+
+    this.registerDomEvent(window, 'message', (event) => this.handlePreviewMessage(event));
 
     this.registerMarkdownPostProcessor((element) => {
       for (const image of Array.from(element.querySelectorAll('img[src]'))) {
@@ -230,11 +251,100 @@ module.exports = class HexoManagerPlugin extends Plugin {
     this.addRibbonIcon('rocket', 'Hexo 本地预览', () => this.startServer());
     this.addRibbonIcon('panel-right', 'Hexo 侧边栏预览', () => this.openPreviewView());
     this.updatePreviewTarget();
+    this.attachEditorScroll();
+    this.refreshScrollSyncControls();
   }
 
   onunload() {
     if (this.previewRefreshTimer) window.clearTimeout(this.previewRefreshTimer);
+    if (this.editorAttachTimer) window.clearTimeout(this.editorAttachTimer);
+    if (this.scrollSyncRaf) window.cancelAnimationFrame(this.scrollSyncRaf);
+    this.detachEditorScroll();
     this.stopServer();
+  }
+
+  openPublishDialog() {
+    new TextInputModal(
+      this.app,
+      '发布说明',
+      '例如：更新论文笔记',
+      (message) => this.confirmPublish(message),
+    ).open();
+  }
+
+  handlePreviewMessage(event) {
+    if (event.data?.type !== 'hexo-manager-publish') return;
+    const fromPreview = this.app.workspace
+      .getLeavesOfType(VIEW_TYPE_HEXO_PREVIEW)
+      .some((leaf) => leaf.view instanceof HexoPreviewView && leaf.view.frame?.contentWindow === event.source);
+    if (fromPreview) this.openPublishDialog();
+  }
+
+  async toggleScrollSync() {
+    this.syncScrollEnabled = !this.syncScrollEnabled;
+    this.settings.syncScrollEnabled = this.syncScrollEnabled;
+    await this.saveData(this.settings);
+    if (this.syncScrollEnabled) {
+      this.attachEditorScroll();
+      this.syncPreviewScroll();
+    } else {
+      this.detachEditorScroll();
+    }
+    this.refreshScrollSyncControls();
+  }
+
+  refreshScrollSyncControls() {
+    for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_HEXO_PREVIEW)) {
+      if (leaf.view instanceof HexoPreviewView) leaf.view.setSyncButtonLabel();
+    }
+  }
+
+  findEditorScrollElement() {
+    const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+    if (!view) return null;
+    return view.editor?.cm?.scrollDOM || view.contentEl.querySelector('.cm-scroller');
+  }
+
+  attachEditorScroll() {
+    this.detachEditorScroll();
+    if (!this.syncScrollEnabled) return;
+    const element = this.findEditorScrollElement();
+    if (!element) {
+      if (this.editorAttachTimer) window.clearTimeout(this.editorAttachTimer);
+      this.editorAttachTimer = window.setTimeout(() => this.attachEditorScroll(), 250);
+      return;
+    }
+    this.editorScrollElement = element;
+    this.editorScrollHandler = () => this.scheduleScrollSync();
+    element.addEventListener('scroll', this.editorScrollHandler, { passive: true });
+    this.scheduleScrollSync();
+  }
+
+  detachEditorScroll() {
+    if (this.editorScrollElement && this.editorScrollHandler) {
+      this.editorScrollElement.removeEventListener('scroll', this.editorScrollHandler);
+    }
+    this.editorScrollElement = null;
+    this.editorScrollHandler = null;
+  }
+
+  scheduleScrollSync() {
+    if (!this.syncScrollEnabled || this.scrollSyncRaf) return;
+    this.scrollSyncRaf = window.requestAnimationFrame(() => {
+      this.scrollSyncRaf = null;
+      this.syncPreviewScroll();
+    });
+  }
+
+  syncPreviewScroll() {
+    if (!this.syncScrollEnabled) return;
+    const element = this.editorScrollElement || this.findEditorScrollElement();
+    if (!element) return;
+    const max = Math.max(0, element.scrollHeight - element.clientHeight);
+    const ratio = max > 0 ? Math.min(1, Math.max(0, element.scrollTop / max)) : 0;
+    for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_HEXO_PREVIEW)) {
+      if (leaf.view instanceof HexoPreviewView) leaf.view.sendScrollRatio(ratio);
+    }
   }
 
   previewUrlForFile(file) {
