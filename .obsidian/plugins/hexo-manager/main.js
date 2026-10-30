@@ -10,6 +10,7 @@ class HexoPreviewView extends ItemView {
     super(leaf);
     this.plugin = plugin;
     this.frame = null;
+    this.url = plugin.previewUrl;
   }
 
   getViewType() {
@@ -44,14 +45,20 @@ class HexoPreviewView extends ItemView {
       cls: 'hexo-manager-preview-frame',
       attr: {
         title: 'Hexo 本地网站预览',
-        src: this.plugin.previewUrl,
+        src: this.url,
       },
     });
   }
 
+  setUrl(url) {
+    this.url = url || this.plugin.homeUrl;
+    if (this.frame) this.reload();
+  }
+
   reload() {
     if (!this.frame) return;
-    this.frame.src = `${this.plugin.previewUrl}?_=${Date.now()}`;
+    const separator = this.url.includes('?') ? '&' : '?';
+    this.frame.src = `${this.url}${separator}_=${Date.now()}`;
   }
 }
 
@@ -141,8 +148,18 @@ module.exports = class HexoManagerPlugin extends Plugin {
   async onload() {
     this.serverProcess = null;
     this.root = this.app.vault.adapter.getBasePath();
-    this.previewUrl = 'http://localhost:4000/';
+    this.homeUrl = 'http://localhost:4000/';
+    this.previewUrl = this.homeUrl;
+    this.previewSourcePath = null;
+    this.previewRefreshTimer = null;
     this.registerView(VIEW_TYPE_HEXO_PREVIEW, (leaf) => new HexoPreviewView(leaf, this));
+    this.registerEvent(this.app.workspace.on('active-leaf-change', (leaf) => {
+      if (leaf && leaf.view && leaf.view.getViewType?.() === VIEW_TYPE_HEXO_PREVIEW) return;
+      this.updatePreviewTarget();
+    }));
+    this.registerEvent(this.app.vault.on('modify', (file) => {
+      if (file.path === this.previewSourcePath) this.schedulePreviewRefresh();
+    }));
 
     this.addCommand({
       id: 'hexo-new-post',
@@ -208,10 +225,54 @@ module.exports = class HexoManagerPlugin extends Plugin {
 
     this.addRibbonIcon('rocket', 'Hexo 本地预览', () => this.startServer());
     this.addRibbonIcon('panel-right', 'Hexo 侧边栏预览', () => this.openPreviewView());
+    this.updatePreviewTarget();
   }
 
   onunload() {
+    if (this.previewRefreshTimer) window.clearTimeout(this.previewRefreshTimer);
     this.stopServer();
+  }
+
+  previewUrlForFile(file) {
+    if (!file || file.extension !== 'md' || !file.path.startsWith('source/_posts/')) {
+      return this.homeUrl;
+    }
+    const cache = this.app.metadataCache.getFileCache(file);
+    const value = cache && cache.frontmatter && cache.frontmatter.date;
+    const dateText = String(value || '');
+    const match = dateText.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    const date = match
+      ? { year: match[1], month: match[2].padStart(2, '0'), day: match[3].padStart(2, '0') }
+      : (() => {
+          const fallback = new Date(file.stat.mtime);
+          return {
+            year: String(fallback.getFullYear()),
+            month: String(fallback.getMonth() + 1).padStart(2, '0'),
+            day: String(fallback.getDate()).padStart(2, '0'),
+          };
+        })();
+    const relative = file.path
+      .slice('source/_posts/'.length)
+      .replace(/\.md$/i, '')
+      .split('/')
+      .map((part) => encodeURIComponent(part))
+      .join('/');
+    return `${this.homeUrl}${date.year}/${date.month}/${date.day}/${relative}/`;
+  }
+
+  updatePreviewTarget() {
+    const file = this.app.workspace.getActiveFile();
+    this.previewSourcePath = file && file.path.startsWith('source/_posts/') ? file.path : null;
+    this.previewUrl = this.previewUrlForFile(file);
+    this.refreshPreviewViews();
+  }
+
+  schedulePreviewRefresh() {
+    if (this.previewRefreshTimer) window.clearTimeout(this.previewRefreshTimer);
+    this.previewRefreshTimer = window.setTimeout(() => {
+      this.previewRefreshTimer = null;
+      this.refreshPreviewViews();
+    }, 800);
   }
 
   assetVaultPath(source) {
@@ -230,6 +291,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
   }
 
   async openPreviewView() {
+    this.updatePreviewTarget();
     this.startServer(false);
     const leaf = this.app.workspace.getRightLeaf(false);
     if (!leaf) {
@@ -243,7 +305,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
 
   refreshPreviewViews() {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_HEXO_PREVIEW)) {
-      if (leaf.view instanceof HexoPreviewView) leaf.view.reload();
+      if (leaf.view instanceof HexoPreviewView) leaf.view.setUrl(this.previewUrl);
     }
   }
 
