@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "source/_posts/你好.md",
-                "mode": "source",
+                "file": "source/_posts/Hexo Manager使用说明.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "你好"
+              "title": "Hexo Manager使用说明"
             }
           }
         ]
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "source/_posts/topic/RM回忆录.md",
+                "file": "source/_posts/Hexo Manager使用说明.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "source/_posts/topic/RM回忆录.md",
+                "file": "source/_posts/Hexo Manager使用说明.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "source/_posts/topic/RM回忆录.md",
+                "file": "source/_posts/Hexo Manager使用说明.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -169,16 +169,27 @@
               "icon": "lucide-list",
               "title": "大纲"
             }
+          },
+          {
+            "id": "73911c899340b1a0",
+            "type": "leaf",
+            "state": {
+              "type": "hexo-manager-preview",
+              "state": {},
+              "icon": "globe",
+              "title": "Hexo 实时预览"
+            }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 509
   },
   "left-ribbon": {
     "hiddenItems": {
+      "hexo-manager:Hexo 侧边栏预览": false,
       "hexo-manager:Hexo 本地预览": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
@@ -191,29 +202,42 @@
   },
   "active": "bcbeba0a7c720d5c",
   "lastOpenFiles": [
-    "public/archives/2026/10/index.html",
-    "public/archives/2026/index.html",
-    "public/2026/10/30/你好/index.html",
-    "public/2026/10/30/你好",
+    "public/index.html",
+    "public/assets/Thinking/DS/deepseek.png",
+    "public/assets/Thinking/DS",
+    "public/assets/Thinking",
+    "public/archives/2025/11/index.html",
+    "public/archives/2025/11",
+    "public/archives/2025/06/index.html",
+    "public/archives/2025/06",
+    "public/archives/2025/04/index.html",
+    "public/archives/2025/04",
+    "public/tags/测试/index.html",
+    "public/tags/测试",
+    "public/assets/BSDOC/Bspline_animation.gif",
+    "public/assets/Robotics/workspace.gif",
+    "public/assets/BSDOC/12345.gif",
+    "public/assets/rm1.png",
+    "public/assets/BSDOC/ps.gif",
+    "public/assets/img1.png",
+    "public/assets/img3.png",
+    "public/assets/control/kalman2.png",
+    "public/assets/control/kalman.png",
     "source/_posts/topic/卡尔曼滤波.md",
-    "source/_posts/你好.md",
-    "source/_posts/未命名.base",
+    "source/_posts/topic/BSpline.md",
+    "source/_posts/topic/IsaacGym踩坑记录.md",
+    "source/_posts/Hexo Manager使用说明.md",
+    "source/_posts/Hexo使用指南.md",
+    "_templates/Hexo文章.md",
+    "source/_posts/topic/AI时代的思考.md",
     "source/_posts/topic/现代控制理论.md",
+    "source/_posts/topic/YummyNote.md",
+    "source/_posts/topic/topic-test.md",
+    "source/_posts/topic/RM回忆录.md",
+    "README.md",
+    "source/_posts/你好.md",
     "source/_posts/nihao.md",
     "source/_posts/codex-plugin-test.md",
-    "netlify.toml",
-    "source/_posts/topic/AI时代的思考.md",
-    "source/_posts/topic/RM回忆录.md",
-    "source/_posts/topic/IsaacGym踩坑记录.md",
-    "source/_posts/topic/BSpline.md",
-    "source/assets/control/adcontrol.png",
-    "source/_posts/未命名 1.base",
-    "source/_posts/未命名.md",
-    "public/archives/2026/10",
-    "public/archives/2026",
-    "source/assets/BSDOC/4NKnot.png",
-    "source/assets/BSDOC/4Knot.png",
-    "source/_posts/topic/topic-test.md",
-    "source/_posts/topic/YummyNote.md"
+    "source/_posts/未命名.md"
   ]
 }
