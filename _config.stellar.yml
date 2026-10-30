@@ -17,6 +17,11 @@ topic:
   enable: true
   filter: "topics"  
 
+# 直接加载图片，避免快速滚动时懒加载观察器或外部 CDN 未及时响应导致图片停留在占位图。
+plugins:
+  lazyload:
+    enable: false
+
 # 强制实用日期
 force_date: true
 # favicon: /assets/logo/my_logo.ico
