@@ -46,13 +46,17 @@ class HexoPreviewView extends ItemView {
       attr: {
         title: 'Hexo 本地网站预览',
         src: this.url,
+        sandbox: 'allow-scripts allow-same-origin allow-forms allow-popups',
+        loading: 'eager',
       },
     });
   }
 
-  setUrl(url) {
-    this.url = url || this.plugin.homeUrl;
-    if (this.frame) this.reload();
+  setUrl(url, force = false) {
+    const nextUrl = url || this.plugin.homeUrl;
+    const changed = nextUrl !== this.url;
+    this.url = nextUrl;
+    if (this.frame && (changed || force)) this.reload();
   }
 
   reload() {
@@ -271,7 +275,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
     if (this.previewRefreshTimer) window.clearTimeout(this.previewRefreshTimer);
     this.previewRefreshTimer = window.setTimeout(() => {
       this.previewRefreshTimer = null;
-      this.refreshPreviewViews();
+      this.refreshPreviewViews(true);
     }, 800);
   }
 
@@ -303,9 +307,9 @@ module.exports = class HexoManagerPlugin extends Plugin {
     window.setTimeout(() => this.refreshPreviewViews(), 1500);
   }
 
-  refreshPreviewViews() {
+  refreshPreviewViews(force = false) {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_HEXO_PREVIEW)) {
-      if (leaf.view instanceof HexoPreviewView) leaf.view.setUrl(this.previewUrl);
+      if (leaf.view instanceof HexoPreviewView) leaf.view.setUrl(this.previewUrl, force);
     }
   }
 
@@ -377,7 +381,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
     try {
       const hexo = this.hexoCommand();
       await this.runFile(hexo.file, [...hexo.args, ...args], label);
-      this.refreshPreviewViews();
+      this.refreshPreviewViews(true);
       new Notice(`${label}完成`);
     } catch (error) {
       new Notice(error.message, 10000);
@@ -437,7 +441,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
     try {
       const hexo = this.hexoCommand();
       await this.runFile(hexo.file, [...hexo.args, 'generate'], '网站构建');
-      this.refreshPreviewViews();
+      this.refreshPreviewViews(true);
       await this.run('git', ['add', '-A'], '暂存变更');
       await this.run('git', ['commit', '-m', message], '创建提交');
       await this.run('git', ['push'], '推送远程仓库');

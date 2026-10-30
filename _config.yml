@@ -128,11 +128,13 @@ Gitalk:
   admin: ["你的 GitHub 用户名"]  # 可以设置多个管理员
   language: "zh-CN"  # 语言（可选）
 
-  math:
-  # enable: true
+
+# KaTeX is rendered by hexo-renderer-markdown-it-plus. Keep its stylesheet
+# inside the site so local previews do not depend on an external CDN.
+math:
   katex:
-    strict: false
-    enable: true
-    version: "0.16.8"  # 指定 KaTeX 版本
-    copy_tex: true     # 允许复制公式代码
-    mhchem: false
+    css: /assets/katex/katex.min.css
+    options:
+      throwOnError: false
+  mathjax:
+    css: false

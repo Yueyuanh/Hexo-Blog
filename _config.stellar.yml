@@ -145,7 +145,7 @@ math:
   # enable: true
   katex:
     strict: false
-    enable: true
+    enable: false
     version: "0.16.8"  # 指定 KaTeX 版本
     copy_tex: true     # 允许复制公式代码
     mhchem: false

@@ -1,6 +1,6 @@
 ---
 title: BSpline 三次B样条曲线
-date: 2025-011-15 21:34:31
+date: 2025-11-15 21:34:31
 topic: control
 tags: [控制理论,卡尔曼滤波]
 # cover: //assets/control/kalman.png
@@ -23,18 +23,6 @@ BSpline 三次B样条曲线
 BSpline 三次B样条曲线简介与推导
 
 
-<head>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    </script>
-</head>
-
 # BSpline 三次B样条曲线
 
 ## B样条
@@ -54,12 +42,12 @@ $$
 ### 四个样条函数（基函数）
 
 $$
-\begin{align}
+\begin{aligned}
 f_1(s)&=\frac{1}{6}(-s^3+3s^2-3s+1)  \\
 f_2(s)&=\frac{1}{6}(3s^3-6s^2+4) \\
 f_3(s)&=\frac{1}{6}(-3s^3+3s^2+3s+1) \\
 f_4(s)&=\frac{1}{6}s^3
-\end{align}
+\end{aligned}
 $$
 
 其中：
@@ -148,11 +136,11 @@ $$
 
 根据起始点增广的形式我们可以得出：
 $$
-\begin{align}
+\begin{aligned}
 C_{1}&=C_{O1}-V_1L \\
 C_{2}&=C_{O1} \\
 C_{3}&=C_{O1}+V_1L
-\end{align}
+\end{aligned}
 $$
 可以看出，这种定义使得原本的$C_1$（或$C_n$）在增广后的**三点连线的中点**，如下图所示
 
@@ -162,7 +150,7 @@ $$
 
 我们可以将增广点代入上式，可得：
 $$
-\begin{align}
+\begin{aligned}
 P(s)&=\frac{1}{6} 
 \begin{bmatrix}
 1  &  s  & s^2 & s^3 \\
@@ -202,7 +190,7 @@ C_2 \\
 \frac{1}{6}(-C_2+C_4+2V_1L)
 \end{bmatrix}
 
-\end{align}
+\end{aligned}
 $$
 当$s=0$时，即在样条曲线起点：
 $$
@@ -212,11 +200,11 @@ $$
 
 当然，对于终点$C_N$,同理：
 $$
-\begin{align}
+\begin{aligned}
 C_{N-2}&=C_{ON}-V_NL \\
 C_{N-1}&=C_{ON} \\
 C_{N}  &=C_{ON}+V_NL
-\end{align}
+\end{aligned}
 $$
 代入增广矩阵方程：
 $$
