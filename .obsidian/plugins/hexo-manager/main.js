@@ -1,7 +1,59 @@
-const { Plugin, Modal, Notice, Setting, TFile } = require('obsidian');
+const { Plugin, ItemView, Modal, Notice, Setting, TFile } = require('obsidian');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+
+const VIEW_TYPE_HEXO_PREVIEW = 'hexo-manager-preview';
+
+class HexoPreviewView extends ItemView {
+  constructor(leaf, plugin) {
+    super(leaf);
+    this.plugin = plugin;
+    this.frame = null;
+  }
+
+  getViewType() {
+    return VIEW_TYPE_HEXO_PREVIEW;
+  }
+
+  getDisplayText() {
+    return 'Hexo 实时预览';
+  }
+
+  getIcon() {
+    return 'globe';
+  }
+
+  async onOpen() {
+    this.render();
+  }
+
+  async onClose() {
+    this.frame = null;
+    this.contentEl.empty();
+  }
+
+  render() {
+    this.contentEl.empty();
+    this.contentEl.addClass('hexo-manager-preview-view');
+    const toolbar = this.contentEl.createDiv({ cls: 'hexo-manager-preview-toolbar' });
+    toolbar.createEl('span', { text: 'Hexo 本地网站' });
+    const reload = toolbar.createEl('button', { text: '刷新' });
+    reload.addEventListener('click', () => this.reload());
+    this.frame = this.contentEl.createEl('iframe', {
+      cls: 'hexo-manager-preview-frame',
+      attr: {
+        title: 'Hexo 本地网站预览',
+        src: this.plugin.previewUrl,
+      },
+    });
+  }
+
+  reload() {
+    if (!this.frame) return;
+    this.frame.src = `${this.plugin.previewUrl}?_=${Date.now()}`;
+  }
+}
 
 function openExternal(url) {
   try {
@@ -89,6 +141,8 @@ module.exports = class HexoManagerPlugin extends Plugin {
   async onload() {
     this.serverProcess = null;
     this.root = this.app.vault.adapter.getBasePath();
+    this.previewUrl = 'http://localhost:4000/';
+    this.registerView(VIEW_TYPE_HEXO_PREVIEW, (leaf) => new HexoPreviewView(leaf, this));
 
     this.addCommand({
       id: 'hexo-new-post',
@@ -124,6 +178,12 @@ module.exports = class HexoManagerPlugin extends Plugin {
     });
 
     this.addCommand({
+      id: 'hexo-open-sidebar-preview',
+      name: 'Hexo: 打开侧边栏预览',
+      callback: () => this.openPreviewView(),
+    });
+
+    this.addCommand({
       id: 'hexo-publish',
       name: 'Hexo: 发布到 Git 远程仓库',
       callback: () =>
@@ -137,10 +197,9 @@ module.exports = class HexoManagerPlugin extends Plugin {
 
     this.registerMarkdownPostProcessor((element) => {
       for (const image of Array.from(element.querySelectorAll('img[src]'))) {
-        const source = image.getAttribute('src');
-        const match = source && source.match(/^(?:\.\/|\/)?(?:source\/)?assets\/(.+)$/);
-        if (!match) continue;
-        const file = this.app.vault.getAbstractFileByPath(`source/assets/${match[1]}`);
+        const vaultPath = this.assetVaultPath(image.getAttribute('src'));
+        if (!vaultPath) continue;
+        const file = this.app.vault.getAbstractFileByPath(vaultPath);
         if (file instanceof TFile) {
           image.setAttribute('src', this.app.vault.getResourcePath(file));
         }
@@ -148,10 +207,44 @@ module.exports = class HexoManagerPlugin extends Plugin {
     });
 
     this.addRibbonIcon('rocket', 'Hexo 本地预览', () => this.startServer());
+    this.addRibbonIcon('panel-right', 'Hexo 侧边栏预览', () => this.openPreviewView());
   }
 
   onunload() {
     this.stopServer();
+  }
+
+  assetVaultPath(source) {
+    if (!source) return null;
+    let value = source.trim();
+    if (!value || /^data:/i.test(value) || /^https?:\/\//i.test(value)) return null;
+    if (value.startsWith('//assets/')) value = value.slice(1);
+    try {
+      value = decodeURIComponent(value);
+    } catch (_) {
+      return null;
+    }
+    value = value.replace(/\\/g, '/').split(/[?#]/, 1)[0];
+    const match = value.match(/(?:^|\/)(?:source\/)?assets\/(.+)$/i);
+    return match ? `source/assets/${match[1]}` : null;
+  }
+
+  async openPreviewView() {
+    this.startServer(false);
+    const leaf = this.app.workspace.getRightLeaf(false);
+    if (!leaf) {
+      new Notice('无法打开侧边栏预览');
+      return;
+    }
+    await leaf.setViewState({ type: VIEW_TYPE_HEXO_PREVIEW, active: true });
+    this.app.workspace.revealLeaf(leaf);
+    window.setTimeout(() => this.refreshPreviewViews(), 1500);
+  }
+
+  refreshPreviewViews() {
+    for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_HEXO_PREVIEW)) {
+      if (leaf.view instanceof HexoPreviewView) leaf.view.reload();
+    }
   }
 
   command(name, args) {
@@ -222,6 +315,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
     try {
       const hexo = this.hexoCommand();
       await this.runFile(hexo.file, [...hexo.args, ...args], label);
+      this.refreshPreviewViews();
       new Notice(`${label}完成`);
     } catch (error) {
       new Notice(error.message, 10000);
@@ -238,10 +332,10 @@ module.exports = class HexoManagerPlugin extends Plugin {
     }
   }
 
-  startServer() {
+  startServer(openBrowser = true) {
     if (this.serverProcess && !this.serverProcess.killed) {
       new Notice('本地预览已经在运行');
-      openExternal('http://localhost:4000');
+      if (openBrowser) openExternal('http://localhost:4000');
       return;
     }
     let command;
@@ -260,7 +354,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
     this.serverProcess.on('error', (error) => new Notice(`本地预览启动失败：${error.message}`, 10000));
     this.serverProcess.on('close', () => (this.serverProcess = null));
     new Notice('本地预览已启动：http://localhost:4000');
-    window.setTimeout(() => openExternal('http://localhost:4000'), 1200);
+    if (openBrowser) window.setTimeout(() => openExternal('http://localhost:4000'), 1200);
   }
 
   stopServer() {
@@ -281,6 +375,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
     try {
       const hexo = this.hexoCommand();
       await this.runFile(hexo.file, [...hexo.args, 'generate'], '网站构建');
+      this.refreshPreviewViews();
       await this.run('git', ['add', '-A'], '暂存变更');
       await this.run('git', ['commit', '-m', message], '创建提交');
       await this.run('git', ['push'], '推送远程仓库');
@@ -311,6 +406,7 @@ module.exports = class HexoManagerPlugin extends Plugin {
         .filter((entry) => entry.path);
       new ConfirmModal(
         this.app,
+        message,
         entries,
         () => this.publish(message),
       ).open();
